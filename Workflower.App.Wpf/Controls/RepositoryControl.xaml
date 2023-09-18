@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="Workflower.App.Wpf.Controls.RepositoryControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Workflower.App.Wpf.Controls"
+             mc:Ignorable="d" 
+             DataContextChanged="RepositoryControl_OnDataContextChanged"
+             >
+    <Grid 
+        VerticalAlignment="Center"
+        Visibility="{Binding RelativeSource={RelativeSource AncestorType=controls:RepositoryControl}, Path=RepositoryVisibility}"
+        >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+
+        <Label
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=controls:DirectoryControl}, Path=IsNotEdit}"
+            Content="{Binding Path=Branch}"  
+            MouseLeftButtonUp="Label_OnMouseLeftButtonUp"
+            />
+
+        <StackPanel 
+            Orientation="Horizontal"
+            Grid.Column="1"
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=controls:DirectoryControl}, Path=IsNotEdit}"
+                    >
+            <controls:IconButton 
+                Icon="{DynamicResource IconBranch}" 
+                ToolTip="Pull main and checkout a new branch"
+                Click="ButtonBranch_OnMouseLeftButtonUp"
+                />
+            <controls:IconButton 
+                Icon="{DynamicResource IconPencil}" 
+                ToolTip="Stage and commit all changes" 
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=controls:RepositoryControl}, Path=HasEdits}"
+                Click="ButtonCommit_OnMouseLeftButtonUp"
+                />
+            <controls:IconButton 
+                Icon="{DynamicResource IconArrowDown}"
+                ToolTip="{Binding RelativeSource={RelativeSource AncestorType=controls:RepositoryControl}, Path=IncomingToolTip}"
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=controls:RepositoryControl}, Path=HasIncoming}"
+                Click="PullButton_OnClick"
+                />
+            <controls:IconButton 
+                Icon="{DynamicResource IconArrowUp}" 
+                ToolTip="{Binding RelativeSource={RelativeSource AncestorType=controls:RepositoryControl}, Path=OutgoingToolTip}"
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=controls:RepositoryControl}, Path=HasOutgoing}"
+                Click="PushButton_OnClick"
+                />
+        </StackPanel>
+
+        <controls:EditControl 
+            x:Name="EditCommit"
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=controls:DirectoryControl}, Path=IsCommitEdit}"
+            Placeholder="Commit message" 
+            ConfirmTooltip="Stage and commit all changes"
+            CancelClick="EditControl_OnCancelClick"
+            ConfirmClick="CommitEditControl_OnConfirmClick"
+            Grid.Column="2"
+            />
+
+        <controls:EditControl 
+            x:Name="EditBranch"
+            Visibility="{Binding RelativeSource={RelativeSource AncestorType=controls:DirectoryControl}, Path=IsBranchEdit}"
+            Placeholder="Branch name" 
+            ConfirmTooltip="Pull main and checkout a new branch"
+            CancelClick="EditControl_OnCancelClick"
+            ConfirmClick="BranchEditControl_OnConfirmClick"
+            Grid.Column="2"
+        />
+
+    </Grid>
+</UserControl>

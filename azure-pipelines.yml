@@ -1,0 +1,25 @@
+pr: none
+
+pool:
+  vmImage: "windows-latest"
+
+continueOnError: false
+
+variables:
+  projects: "**/*.csproj"
+  testProjects: "**/*Tests*.csproj"
+  buildConfiguration: "Release"
+
+steps:
+  - task: DotNetCoreCLI@2
+    displayName: "Restore"
+    inputs:
+      command: "restore"
+      projects: "$(projects)"
+
+  - task: DotNetCoreCLI@2
+    displayName: "Build"
+    inputs:
+      command: "build"
+      projects: "$(projects)"
+      arguments: "--configuration $(buildConfiguration) --no-restore"

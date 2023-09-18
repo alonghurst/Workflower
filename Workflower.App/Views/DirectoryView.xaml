@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Workflower.App.Views.DirectoryView"
+             xmlns:views="clr-namespace:Workflower.App.Views"
+             Margin="5,0"
+             >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition  />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Label Text="{Binding Name}" FontSize="16" VerticalOptions="Center" />
+        <views:RepositoryView BindingContext="{Binding Repository}" HorizontalOptions="Fill" Grid.Column="1" />
+        <views:CommandView BindingContext="{Binding Commands}" HorizontalOptions="Fill" Grid.Column="2" />
+    </Grid>
+</ContentView>

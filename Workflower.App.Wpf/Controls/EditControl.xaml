@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="Workflower.App.Wpf.Controls.EditControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Workflower.App.Wpf.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBox x:Name="TextBox" Margin="5" Grid.Column="0" KeyUp="TextBox_OnKeyUp" />
+        <TextBlock IsHitTestVisible="False" Text="{Binding RelativeSource={RelativeSource AncestorType=controls:EditControl}, Path=Placeholder}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="DarkGray" Grid.Column="0">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=TextBox}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        <controls:IconButton
+            Grid.Column="1"
+            Icon="{DynamicResource IconClose}"
+            ToolTip="Cancel" 
+            Click="CancelButton_OnClick"
+        />
+
+        <controls:IconButton 
+            Grid.Column="2"
+            Icon="{DynamicResource IconCheck}" 
+            ToolTip="{Binding RelativeSource={RelativeSource AncestorType=controls:EditControl}, Path=ConfirmTooltip}"
+            Click="ConfirmButton_OnClick"
+        />
+    </Grid>
+</UserControl>

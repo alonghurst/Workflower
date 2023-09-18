@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Workflower.App.Views.RepositoryView"
+             Margin="5,0"
+             xmlns:converters="clr-namespace:Workflower.App.Converters"
+             xmlns:components="clr-namespace:Workflower.App.Views.Components"
+             xmlns:views="clr-namespace:Workflower.App.Views"
+             >
+    <ContentView.Resources>
+        <converters:IntToBoolConverter x:Key="intToBool" />
+        <converters:InverseBoolConverter x:Key="inverseBool" />
+        <converters:IsNonEmptyStringConverter x:Key="nonEmpty" />
+        <converters:IsCommitEditModeConverter x:Key="isCommitEdit" />
+        <converters:IsNotEditModeConverter x:Key="isNotEdit" />
+        <converters:IsBranchEditModeConverter x:Key="isBranchEdit" />
+    </ContentView.Resources>
+
+    <Grid 
+            BindingContext="{Binding Source={RelativeSource AncestorType={x:Type ContentView}}, Path=Repository}"
+            VerticalOptions="Fill"
+        HorizontalOptions="FillAndExpand"
+                               >
+        <HorizontalStackLayout 
+                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type views:DirectoryView}}, Path=ViewState.EditMode, Converter={StaticResource isNotEdit}}" 
+                VerticalOptions="Center"
+                >
+
+            <Label Text="{Binding Branch}" VerticalOptions="Center" />
+
+            <Button 
+                    IsVisible="{Binding HasUncommittedChanges}" 
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Clicked="OnButtonCommitClicked"
+                    ImageSource="pencil_12.png"
+                    Padding="1"
+                />
+
+            <Button 
+                    IsVisible="{Binding Path=IncomingCommits, Converter={StaticResource intToBool}}" 
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Clicked="OnButtonPullClicked"
+                    ImageSource="arrow_down_12.png"
+                    Text="{Binding IncomingCommits}"
+                    FontSize="10"
+                    Padding="1"
+                />
+
+            <Button 
+                    IsVisible="{Binding Path=OutgoingCommits, Converter={StaticResource intToBool}}" 
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Clicked="OnButtonPushClicked"
+                    ImageSource="arrow_up_12.png"
+                    Text="{Binding OutgoingCommits}"
+                    FontSize="10"
+                    Padding="1"
+                />
+
+            <Button 
+                    IsVisible="{Binding IsUntracked}" 
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Clicked="OnButtonPushClicked"
+                    ImageSource="arrow_up_12.png"
+                    Padding="1"
+                />
+
+        </HorizontalStackLayout >
+
+        <Grid 
+            IsVisible="{Binding Source={RelativeSource AncestorType={x:Type views:DirectoryView}}, Path=ViewState.EditMode, Converter={StaticResource isCommitEdit}}" 
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
+        >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="20" />
+            </Grid.ColumnDefinitions>
+
+            <Entry x:Name="CommitMessage"  Placeholder="Commit Message" Completed="OnCommitMessageCompleted" HorizontalOptions="FillAndExpand" VerticalOptions="Center" />
+
+            <Button 
+                Grid.Column="1"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Clicked="OnButtonCancelCommitClicked"
+                ImageSource="close_12.png"
+                Padding="1"
+            />
+            <Button 
+                Grid.Column="2"
+                BindingContext="{x:Reference Name=CommitMessage}"
+                IsEnabled="{Binding Path=Text, Converter={StaticResource nonEmpty}}" 
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Clicked="OnButtonConfirmCommitClicked"
+                ImageSource="check_12.png"
+                Padding="1"
+            />
+
+        </Grid>
+    </Grid>
+</ContentView>

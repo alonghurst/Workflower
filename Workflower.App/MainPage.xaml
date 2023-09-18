@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Workflower.App.MainPage"
+             xmlns:views="clr-namespace:Workflower.App.Views"
+             >
+
+    <VerticalStackLayout>
+        <views:Toolbar />
+        <ScrollView>
+            <VerticalStackLayout 
+                x:Name="Directories"
+                BindingContext="{Binding Source={RelativeSource AncestorType={x:Type Shell}}, Path=Project}"
+                BindableLayout.ItemsSource="{Binding Path=Directories.Values}" 
+                HorizontalOptions="FillAndExpand"
+                Spacing="1"
+        >
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate>
+                            <views:DirectoryView />
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </ScrollView>
+        <Label Text="{Binding Source={RelativeSource AncestorType={x:Type Shell}}, Path=LoadDuration}" />
+        <Button Text="Test" Clicked="OnButtonClicked"  />
+    </VerticalStackLayout>
+
+</ContentPage>

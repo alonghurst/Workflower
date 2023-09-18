@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Workflower.App.Views.CommandView"
+             Margin="5,0"
+             xmlns:converters="clr-namespace:Workflower.App.Converters"
+             xmlns:components="clr-namespace:Workflower.App.Views.Components"
+             xmlns:views="clr-namespace:Workflower.App.Views"
+             >
+    <ContentView.Resources>
+        <converters:IntToBoolConverter x:Key="intToBool" />
+        <converters:InverseBoolConverter x:Key="inverseBool" />
+        <converters:IsNonEmptyStringConverter x:Key="nonEmpty" />
+        <converters:IsCommitEditModeConverter x:Key="isCommitEdit" />
+        <converters:IsNotEditModeConverter x:Key="isNotEdit" />
+        <converters:IsBranchEditModeConverter x:Key="isBranchEdit" />
+    </ContentView.Resources>
+
+    <HorizontalStackLayout 
+                IsVisible="{Binding Source={RelativeSource AncestorType={x:Type views:DirectoryView}}, Path=ViewState.EditMode, Converter={StaticResource isNotEdit}}" 
+                VerticalOptions="Center"
+                BindableLayout.ItemsSource="{Binding}" 
+                >
+
+        <BindableLayout.ItemTemplate>
+            <DataTemplate>
+                <components:CommandButton />
+            </DataTemplate>
+        </BindableLayout.ItemTemplate>
+
+    </HorizontalStackLayout >
+</ContentView>
